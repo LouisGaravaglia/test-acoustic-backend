@@ -143,5 +143,5 @@ CSRF_COOKIE_NAME = "csrftoken"
 CSRF_HEADER_NAME = 'X-CSRFTOKEN'
 
 # Configure Django App for Heroku.
-import django_heroku
-django_heroku.settings(locals())
+# import django_heroku
+# django_heroku.settings(locals())
