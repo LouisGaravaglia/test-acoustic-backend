@@ -147,6 +147,7 @@ CSRF_HEADER_NAME = 'X-CSRFTOKEN'
 # django_heroku.settings(locals())
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 import os
+DISABLE_COLLECTSTATIC=1
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # STATIC_URL = '/static/'
 STATICFILES_DIRS = (
