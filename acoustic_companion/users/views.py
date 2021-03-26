@@ -5,8 +5,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import StreamingHttpResponse
 from django.middleware.csrf import get_token
 import json
-from ..secret_keys import client_id
-from ..secret_keys import client_secret
+from .secret_keys import client_id
+from .secret_keys import client_secret
 from .models import User
 import math
 import random
