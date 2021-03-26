@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'configuration.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'db.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -141,7 +141,3 @@ CORS_ALLOW_HEADERS = (
 )
 CSRF_COOKIE_NAME = "csrftoken"
 CSRF_HEADER_NAME = 'X-CSRFTOKEN'
-
-# Configure Django App for Heroku.
-import django_heroku
-django_heroku.settings(locals())
