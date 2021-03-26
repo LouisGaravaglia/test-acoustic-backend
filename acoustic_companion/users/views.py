@@ -36,7 +36,7 @@ def register_user_view(request):
 
 @csrf_exempt
 def authorize_spotify_view(request):
-    print('//////////////////////////////////')
+    print('/////////////////////////////////')
     state = ''
     possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
     possible_len = len(possible)
