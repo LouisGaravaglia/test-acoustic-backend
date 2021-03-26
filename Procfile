@@ -1,1 +1,1 @@
-web: gunicorn app:app --preload
+web: gunicorn acoustic_companion:app --preload
