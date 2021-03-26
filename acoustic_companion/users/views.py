@@ -10,7 +10,7 @@ import math
 import random
 import base64
 import requests
-from decouple import config
+# from decouple import config
 
 def index(request):
     return HttpResponse('Welcome to the Users page!')
@@ -44,7 +44,8 @@ def authorize_spotify_view(request):
         state += possible[random.randint(0, possible_len - 1)]
 
     load_dotenv(find_dotenv())
-    CLIENT_ID = config('CLIENT_ID')
+    # CLIENT_ID = config('CLIENT_ID')
+    CLIENT_ID = "test"
     stateKey = 'spotify_auth_state'
     url = 'https://accounts.spotify.com/authorize'
     redirect_uri = 'https://acoustic-backend.herokuapp.com/callbackSpotify/'
