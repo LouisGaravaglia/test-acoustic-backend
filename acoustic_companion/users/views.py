@@ -36,6 +36,7 @@ def register_user_view(request):
 
 @csrf_exempt
 def authorize_spotify_view(request):
+    print('//////////////////////////////////')
     state = ''
     possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
     possible_len = len(possible)
@@ -43,7 +44,6 @@ def authorize_spotify_view(request):
     for i in range(16):
         state += possible[random.randint(0, possible_len - 1)]
 
-    load_dotenv(find_dotenv())
     # CLIENT_ID = config('CLIENT_ID')
     CLIENT_ID = "test"
     stateKey = 'spotify_auth_state'
@@ -58,7 +58,7 @@ def authorize_spotify_view(request):
     }
 
     resp = requests.get(url, params=my_params)
-    print('//////////////////////////////////')
+
     print(resp.status_code)
 
 
