@@ -11,6 +11,7 @@ import random
 import base64
 import requests
 from decouple import config
+import os
 
 def index(request):
     return HttpResponse('Welcome to the Users page!')
@@ -44,7 +45,8 @@ def authorize_spotify_view(request):
     for i in range(16):
         state += possible[random.randint(0, possible_len - 1)]
 
-    CLIENT_ID = config('CLIENT_ID')
+    # CLIENT_ID = config('CLIENT_ID')
+    CLIENT_ID = os.environ.get('CLIENT_ID')
     # CLIENT_ID = "test"
     stateKey = 'spotify_auth_state'
     url = 'https://accounts.spotify.com/authorize'
