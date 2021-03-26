@@ -1,0 +1,1 @@
+web: gunicorn acoustic_companion.configuration.wsgi

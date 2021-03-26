@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'h#_8!le8i4f!%i1)yti76+suzmf@fr-erjq4l92c-x&ll@2l!9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://acoustic-backend.herokuapp.com/']
 
 
 # Application definition
