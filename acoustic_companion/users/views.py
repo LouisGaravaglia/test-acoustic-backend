@@ -47,7 +47,7 @@ def authorize_spotify_view(request):
     stateKey = 'spotify_auth_state'
     scope = 'user-read-private user-read-email'
     url = 'https://accounts.spotify.com/authorize?'
-    redirect_uri = 'http://127.0.0.1:8000/callbackSpotify/'
+    redirect_uri = 'https://acoustic-backend.herokuapp.com/callbackSpotify/'
 
     my_params = {
         'response_type': 'code',
