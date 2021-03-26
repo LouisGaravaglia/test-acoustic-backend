@@ -1,2 +1,6 @@
 secrets.py
 secret_keys.py
+.env
+*.DS_Store
+*.vscode
+__pycache__

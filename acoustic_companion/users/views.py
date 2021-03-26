@@ -5,13 +5,13 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import StreamingHttpResponse
 from django.middleware.csrf import get_token
 import json
-from secret_keys import client_id
-from secret_keys import client_secret
 from .models import User
 import math
 import random
 import base64
 import requests
+import os
+from dotenv import load_dotenv, find_dotenv
 
 def index(request):
     return HttpResponse('Welcome to the Users page!')
@@ -44,6 +44,9 @@ def authorize_spotify_view(request):
     for i in range(16):
         state += possible[random.randint(0, possible_len - 1)]
 
+    load_dotenv(find_dotenv())
+    client_id = os.getenv('CLIENT_ID')
+    print("my client_id: " + os.getenv('CLIENT_ID'))
     stateKey = 'spotify_auth_state'
     url = 'https://accounts.spotify.com/authorize'
     redirect_uri = 'https://acoustic-backend.herokuapp.com/callbackSpotify/'
