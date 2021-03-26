@@ -47,6 +47,7 @@ def authorize_spotify_view(request):
 
     # CLIENT_ID = config('CLIENT_ID')
     CLIENT_ID = os.environ.get('CLIENT_ID')
+    print("CLIENT_ID: " + CLIENT_ID)
     # CLIENT_ID = "test"
     stateKey = 'spotify_auth_state'
     url = 'https://accounts.spotify.com/authorize'
