@@ -1,1 +1,1 @@
-web: gunicorn acoustic_companion.wsgi --preload
+web:gunicorn app:app
