@@ -1,1 +1,1 @@
-web: gunicorn acoustic_companion.configuration.wsgi
+web: gunicorn acoustic_companion.wsgi --preload
