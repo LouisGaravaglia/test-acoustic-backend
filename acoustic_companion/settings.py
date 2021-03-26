@@ -55,7 +55,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
-ROOT_URLCONF = 'configuration.urls'
+ROOT_URLCONF = 'acoustic_companion.urls'
 
 TEMPLATES = [
     {
@@ -73,7 +73,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'configuration.wsgi.application'
+WSGI_APPLICATION = 'acoustic_companion.wsgi.application'
 
 
 # Database
