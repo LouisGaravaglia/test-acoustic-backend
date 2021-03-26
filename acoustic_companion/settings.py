@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'users',
+    'acoustic_companion.users',
     #installed django-cors-headers to enable CORS for my POST request to register user
     'corsheaders',
 ]
