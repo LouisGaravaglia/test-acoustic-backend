@@ -69,7 +69,7 @@ def authorize_spotify_view(request):
     resp = requests.get(url, params=my_params)
 
     print(resp.status_code)
-    print(resp.url)
+    # print(resp.url)
 
 
     return HttpResponse({"authorize": "finished authorize"})
