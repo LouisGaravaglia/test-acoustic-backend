@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.csrf import csrf_exempt
-from django.http import StreamingHttpResponse
+from django.http import StreamingHttpResponse, JsonResponse
 from django.middleware.csrf import get_token
 import json
 from .models import User
@@ -60,11 +60,12 @@ def authorize_spotify_view(request):
     #     'state': stateKey
     # }
 
-    url = Request('GET', 'https://accounts.spotify.com/authorize', params={
+    req = Request('GET', 'https://accounts.spotify.com/authorize', params={
         'response_type': 'code',
         'redirect_uri': redirect_uri,
         'client_id': CLIENT_ID
-    }).prepare().url
+    })
+    prepped_url = req.prepare()
 
     # resp = requests.get(url, params=my_params)
 
@@ -72,7 +73,7 @@ def authorize_spotify_view(request):
 
 
     # return HttpResponse({"authorize": "finished authorize"})
-    return HttpResponse({'url': url})
+    return JsonResponse({'url': prepped_url})
 
 @csrf_exempt
 def callback_spotify_view(request):
