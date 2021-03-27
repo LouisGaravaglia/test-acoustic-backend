@@ -66,11 +66,16 @@ def authorize_spotify_view(request):
     # res = {'url': prepped_url}
     # my_response = json.dumps(res)
 
-    req = Request('GET', 'https://accounts.spotify.com/authorize', params=my_params)
-    print(req.params)
+    # req = Request('GET', 'https://accounts.spotify.com/authorize', params=my_params)
+    # print(req.params)
+
+    base_url = 'https://accounts.spotify.com/authorize'
+    query_string =  urlencode(my_params)
+    url = '{}?{}'.format(base_url, query_string)
+    return redirect(url)
 
 
-    return HttpResponse({"authorize": "finished authorize"})
+    # return HttpResponse({"authorize": "finished authorize"})
 
 @csrf_exempt
 def callback_spotify_view(request):
