@@ -9,7 +9,7 @@ from .models import User
 import math
 import random
 import base64
-import requests import Request, post
+from requests import Request, post
 from decouple import config
 import os
 
