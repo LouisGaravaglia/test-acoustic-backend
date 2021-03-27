@@ -67,6 +67,7 @@ def authorize_spotify_view(request):
     # my_response = json.dumps(res)
 
     req = Request('GET', 'https://accounts.spotify.com/authorize', params=my_params)
+    print(dir(req))
 
     # resp = requests.get('https://accounts.spotify.com/authorize', params=my_params)
 
