@@ -49,7 +49,8 @@ def authorize_spotify_view(request):
     CLIENT_ID = os.environ.get('CLIENT_ID')
     stateKey = 'spotify_auth_state'
     # url = 'https://accounts.spotify.com/authorize'
-    redirect_uri = 'https://acoustic-backend.herokuapp.com/callbackSpotify/'
+    # redirect_uri = 'https://acoustic-backend.herokuapp.com/callbackSpotify/'
+    redirect_uri = 'http://localhost:3000/authorized'
 
     my_params = {
         'response_type': 'code',
