@@ -66,6 +66,7 @@ def authorize_spotify_view(request):
         'client_id': CLIENT_ID
     })
     prepped_url = req.prepare()
+    res = {'url': prepped_url}
 
     # resp = requests.get(url, params=my_params)
 
@@ -73,7 +74,7 @@ def authorize_spotify_view(request):
 
 
     # return HttpResponse({"authorize": "finished authorize"})
-    return JsonResponse({'url': prepped_url})
+    return JsonResponse({'url': json.dumps(res)})
 
 @csrf_exempt
 def callback_spotify_view(request):
