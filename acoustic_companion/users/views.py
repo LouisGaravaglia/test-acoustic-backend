@@ -4,7 +4,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.csrf import csrf_exempt
 from django.http import StreamingHttpResponse, JsonResponse
 from django.middleware.csrf import get_token
-from django.utils import urlencode
+from urllib.parse import urlencode
 import json
 from .models import User
 import math
