@@ -78,26 +78,26 @@ def authorize_spotify_view(request):
 @csrf_exempt
 def callback_spotify_view(request):
     print('********************************')
-    code = request.GET.get('code')
-    error = request.GET.get('error')
-    CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
-    print('code: ' + code)
+    # code = request.GET.get('code')
+    # error = request.GET.get('error')
+    # CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
+    # print('code: ' + code)
 
-    response = post('https://accounts.spotify.com/api/token', data={
-        'grant_type': 'authorization_code',
-        'code': code,
-        'redirect_uri': redirect_uri,
-        'client_id': CLIENT_ID,
-        'client_secret': CLIENT_SECRET
-    }).json()
+    # response = post('https://accounts.spotify.com/api/token', data={
+    #     'grant_type': 'authorization_code',
+    #     'code': code,
+    #     'redirect_uri': redirect_uri,
+    #     'client_id': CLIENT_ID,
+    #     'client_secret': CLIENT_SECRET
+    # }).json()
 
-    acccess_token = response.get('access_token')
-    token_type = response.get('token_type')
-    refresh_token = response.get('refresh_token')
-    expires_in = response.get('expires_in')
-    error = response.get('error')
+    # acccess_token = response.get('access_token')
+    # token_type = response.get('token_type')
+    # refresh_token = response.get('refresh_token')
+    # expires_in = response.get('expires_in')
+    # error = response.get('error')
 
-    print('access_token: ' + access_token)
+    # print('access_token: ' + access_token)
 
     return HttpResponse({"callback": "hit callbaack"})
 
