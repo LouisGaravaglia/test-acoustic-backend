@@ -9,7 +9,7 @@ from .models import User
 import math
 import random
 import base64
-import requests
+import requests import Request, post
 from decouple import config
 import os
 
@@ -50,27 +50,54 @@ def authorize_spotify_view(request):
     print("CLIENT_ID: " + CLIENT_ID)
     # CLIENT_ID = "test"
     stateKey = 'spotify_auth_state'
-    url = 'https://accounts.spotify.com/authorize'
+    # url = 'https://accounts.spotify.com/authorize'
     redirect_uri = 'https://acoustic-backend.herokuapp.com/callbackSpotify/'
 
-    my_params = {
+    # my_params = {
+    #     'response_type': 'code',
+    #     'client_id': CLIENT_ID,
+    #     'redirect_uri': redirect_uri,
+    #     'state': stateKey
+    # }
+
+    url = Request('GET', 'https://accounts.spotify.com/authorize', params={
         'response_type': 'code',
-        'client_id': CLIENT_ID,
         'redirect_uri': redirect_uri,
-        'state': stateKey
-    }
+        'client_id': CLIENT_ID
+    }).prepare().url
 
-    resp = requests.get(url, params=my_params)
+    # resp = requests.get(url, params=my_params)
 
-    print(resp.status_code)
+    # print(resp.status_code)
 
 
-    return HttpResponse({"authorize": "finished authorize"})
+    # return HttpResponse({"authorize": "finished authorize"})
+    return HttpResponse({'url': url})
 
 @csrf_exempt
 def callback_spotify_view(request):
     print('********************************')
-    print(request.GET)
+    code = request.GET.get('code')
+    error = request.GET.get('error')
+    CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
+    print('code: ' + code)
+
+    response = post('https://accounts.spotify.com/api/token', data={
+        'grant_type': 'authorization_code',
+        'code': code,
+        'redirect_uri': redirect_uri,
+        'client_id': CLIENT_ID,
+        'client_secret': CLIENT_SECRET
+    }).json()
+
+    acccess_token = response.get('access_token')
+    token_type = response.get('token_type')
+    refresh_token = response.get('refresh_token')
+    expires_in = response.get('expires_in')
+    error = response.get('error')
+
+    print('access_token: ' + access_token)
+
     return HttpResponse({"callback": "hit callbaack"})
 
 #TRYING TO SEND A CSRF TOKEN WHEN USER FIRST ENTERS OUR SITE
