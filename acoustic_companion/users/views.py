@@ -45,37 +45,35 @@ def authorize_spotify_view(request):
     for i in range(16):
         state += possible[random.randint(0, possible_len - 1)]
 
-    # CLIENT_ID = config('CLIENT_ID')
     CLIENT_ID = os.environ.get('CLIENT_ID')
-    print("CLIENT_ID: " + CLIENT_ID)
-    # CLIENT_ID = "test"
     stateKey = 'spotify_auth_state'
-    # url = 'https://accounts.spotify.com/authorize'
+    url = 'https://accounts.spotify.com/authorize'
     redirect_uri = 'https://acoustic-backend.herokuapp.com/callbackSpotify/'
 
-    # my_params = {
-    #     'response_type': 'code',
-    #     'client_id': CLIENT_ID,
-    #     'redirect_uri': redirect_uri,
-    #     'state': stateKey
-    # }
-
-    req = Request('GET', 'https://accounts.spotify.com/authorize', params={
+    my_params = {
         'response_type': 'code',
+        'client_id': CLIENT_ID,
         'redirect_uri': redirect_uri,
-        'client_id': CLIENT_ID
-    })
-    prepped_url = req.prepare()
-    res = {'url': prepped_url}
-    my_response = json.dumps(res)
+        'state': stateKey
+    }
 
-    # resp = requests.get(url, params=my_params)
+    # req = Request('GET', 'https://accounts.spotify.com/authorize', params={
+    #     'response_type': 'code',
+    #     'redirect_uri': redirect_uri,
+    #     'client_id': CLIENT_ID
+    # })
+    # prepped_url = req.prepare()
+    # res = {'url': prepped_url}
+    # my_response = json.dumps(res)
 
-    # print(resp.status_code)
+    resp = requests.get(url, params=my_params)
+
+    print(resp.status_code)
+    print(resp.url)
 
 
-    # return HttpResponse({"authorize": "finished authorize"})
-    return JsonResponse(my_response)
+    return HttpResponse({"authorize": "finished authorize"})
+    # return JsonResponse(my_response)
 
 @csrf_exempt
 def callback_spotify_view(request):
