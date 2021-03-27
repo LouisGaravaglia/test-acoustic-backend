@@ -66,7 +66,8 @@ def authorize_spotify_view(request):
     # res = {'url': prepped_url}
     # my_response = json.dumps(res)
 
-    # resp = requests.get(url, params=my_params)
+    resp = requests.get(url, params=my_params)
+    print(resp)
 
     # print(resp.status_code)
     # print(resp.url)
