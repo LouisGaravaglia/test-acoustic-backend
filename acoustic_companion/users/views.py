@@ -13,7 +13,7 @@ import base64
 import requests
 from decouple import config
 from urllib.parse import urlencode
-from myHelpers.utils import create_base_64_header
+from utils import create_base_64_header
 import os
 
 def index(request):
