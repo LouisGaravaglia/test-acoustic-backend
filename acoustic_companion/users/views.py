@@ -22,7 +22,7 @@ def index(request):
 def dashboard(request):
     return render(request, 'users/dashboard.html')
 
-#WILL NEED TO REMOVE CSRF_EXEMPT AND FIGURE OUT HOW TO PASS CSRF TOKEN WITH HEADERS IN POST REQUEST
+#WILL NEED TO REMOVE CSRF_EXEMPT AND FIGURE OUT HOW TO PASS CSRF TOKEN WITH HEADERS IN POST REQ
 @csrf_exempt
 def register_user_view(request):
 
