@@ -26,7 +26,7 @@ SECRET_KEY = 'h#_8!le8i4f!%i1)yti76+suzmf@fr-erjq4l92c-x&ll@2l!9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['acoustic-backend.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['acoustic-backend.herokuapp.com', '127.0.0.1', 'http://localhost:3000/']
 
 
 # Application definition

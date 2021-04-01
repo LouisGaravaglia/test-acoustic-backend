@@ -7,7 +7,7 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('dashboard/', views.dashboard, name='User Dashboard'),
     path('registerUser/', views.register_user_view, name='register-user'),
-    path('authorizeSpotify/', views.authorize_spotify_view, name='athorize-spotify'),
+    path('authorizeSpotify/', views.authorize_spotify_view, name='aUthorize-spotify'),
     path('requestAccessTokens/', views.request_access_tokens, name='request-access-tokens'),
     path('requestRefreshToken/', views.request_refresh_token, name='request-refresh-token'),
     #TRYING TO SEND A CSRF TOKEN WHEN USER FIRST ENTERS OUR SITE
