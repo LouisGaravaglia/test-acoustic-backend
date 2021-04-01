@@ -2,16 +2,18 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.csrf import csrf_exempt
-from django.http import StreamingHttpResponse, JsonResponse
+from django.http import StreamingHttpResponse
 from django.middleware.csrf import get_token
-from urllib.parse import urlencode
+import json as simplejson 
 import json
 from .models import User
 import math
 import random
 import base64
-from requests import Request, post
+import requests
 from decouple import config
+from urllib.parse import urlencode
+from helpers.utils import create_base_64_header
 import os
 
 def index(request):
@@ -31,79 +33,100 @@ def register_user_view(request):
     email = data["email"]
     username = data["username"]
     password = data["password"]
+    access_token = data["access_token"]
+    refresh_token = data["refresh_token"]
 
-    User.objects.create(first_name=first_name, last_name=last_name, email=email, username=username, password=password)
+    User.objects.create(first_name=first_name, last_name=last_name, email=email, username=username, password=password, access_token=access_token, refresh_token=refresh_token)
 
-    return HttpResponse({"success": True, "csrf": csrf(request)})
+    return HttpResponse({"success": True})
 
 @csrf_exempt
 def authorize_spotify_view(request):
-    print('/////////////////////////////////')
-    state = ''
-    possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-    possible_len = len(possible)
-
-    for i in range(16):
-        state += possible[random.randint(0, possible_len - 1)]
-
-    CLIENT_ID = os.environ.get('CLIENT_ID')
-    stateKey = 'spotify_auth_state'
-    # url = 'https://accounts.spotify.com/authorize'
-    # redirect_uri = 'https://acoustic-backend.herokuapp.com/callbackSpotify/'
-    redirect_uri = 'http://localhost:3000/authorized'
+    button_clicked = request.GET['button_clicked']
+    CLIENT_ID = os.environ.get('CLIENT_ID', config('CLIENT_ID'))
+    REDIRECT_URI = os.environ.get('REDIRECT_URI', config('REDIRECT_URI'))
+    STATE_KEY = os.environ.get('STATE_KEY', config('STATE_KEY'))
+    print('***button_clicked: ' + button_clicked)
+    print('***client_id: ' + CLIENT_ID)
+    print('***redirect_uri: ' + REDIRECT_URI)
+    print('***state_key: ' + STATE_KEY + button_clicked)
 
     my_params = {
         'response_type': 'code',
         'client_id': CLIENT_ID,
-        'redirect_uri': redirect_uri,
-        'state': stateKey
+        'redirect_uri': REDIRECT_URI,
+        'state': STATE_KEY + button_clicked
     }
-
-    # req = Request('GET', 'https://accounts.spotify.com/authorize', params={
-    #     'response_type': 'code',
-    #     'redirect_uri': redirect_uri,
-    #     'client_id': CLIENT_ID
-    # })
-    # prepped_url = req.prepare()
-    # res = {'url': prepped_url}
-    # my_response = json.dumps(res)
-
-    # req = Request('GET', 'https://accounts.spotify.com/authorize', params=my_params)
-    # print(req.params)
 
     base_url = 'https://accounts.spotify.com/authorize'
     query_string =  urlencode(my_params)
     url = '{}?{}'.format(base_url, query_string)
     return redirect(url)
 
+@csrf_exempt
+def request_access_tokens(request):
+    code = request.GET['code']
+    REDIRECT_URI = os.environ.get('REDIRECT_URI', config('REDIRECT_URI'))
+    CLIENT_ID = os.environ.get('CLIENT_ID', config('CLIENT_ID'))
+    CLIENT_SECRET = os.environ.get('CLIENT_SECRET', config('CLIENT_SECRET'))
 
-    # return HttpResponse({"authorize": "finished authorize"})
+    data = {
+        'code': code,
+        'redirect_uri': REDIRECT_URI,
+        'grant_type': 'authorization_code',
+        'client_id': CLIENT_ID,
+        'client_secret': CLIENT_SECRET
+    }
+
+    response = requests.post('https://accounts.spotify.com/api/token', data=data).json()
+
+    access_token = response.get('access_token')
+    token_type = response.get('token_type')
+    refresh_token = response.get('refresh_token')
+    expires_in = response.get('expires_in')
+    error = response.get('error')
+    print('***access_token: ' + access_token)
+    print('***token_type: ' + token_type)
+    print('***refresh_token: ' + refresh_token)
+    print('***expires_in: ', expires_in)
+    print('***error: ', error)
+
+    token_obj = {
+        'access_token': access_token,
+        'token_type': token_type,
+        'refresh_token': refresh_token,
+        'expires_in': expires_in,
+        'error': error
+    }
+
+    json_token = simplejson.dumps(token_obj)
+
+    return HttpResponse(json_token, content_type='application/json')
 
 @csrf_exempt
-def callback_spotify_view(request):
-    print('********************************')
-    # code = request.GET.get('code')
-    # error = request.GET.get('error')
-    # CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
-    # print('code: ' + code)
+def request_refresh_token(request):
+    refresh_token = request.GET['refresh_token']
+    CLIENT_ID = os.environ.get('CLIENT_ID', config('CLIENT_ID'))
+    CLIENT_SECRET = os.environ.get('CLIENT_SECRET', config('CLIENT_SECRET'))
+    base64_header = create_base_64_header(CLIENT_ID, CLIENT_SECRET)
 
-    # response = post('https://accounts.spotify.com/api/token', data={
-    #     'grant_type': 'authorization_code',
-    #     'code': code,
-    #     'redirect_uri': redirect_uri,
-    #     'client_id': CLIENT_ID,
-    #     'client_secret': CLIENT_SECRET
-    # }).json()
+    data = {
+        'grant_type': 'refresh_token',
+        'refresh_token': refresh_token,
+    }
 
-    # acccess_token = response.get('access_token')
-    # token_type = response.get('token_type')
-    # refresh_token = response.get('refresh_token')
-    # expires_in = response.get('expires_in')
-    # error = response.get('error')
+    response = requests.post(
+        'https://accounts.spotify.com/api/token',
+        data=data,
+        headers={f'Authorization: Basic {base64_header}'}
+    ).json()
 
-    # print('access_token: ' + access_token)
+    refresh_token = response.get('refresh_token')
+    print('***refresh_token: ' + refresh_token)
 
-    return HttpResponse({"callback": "hit callbaack"})
+    json_token = simplejson.dumps({'refresh_token': refresh_token})
+
+    return HttpResponse(json_token, content_type='application/json')
 
 #TRYING TO SEND A CSRF TOKEN WHEN USER FIRST ENTERS OUR SITE
 # def send_csrf_view(request):

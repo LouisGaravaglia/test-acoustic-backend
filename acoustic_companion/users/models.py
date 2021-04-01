@@ -7,3 +7,5 @@ class User(models.Model):
     email = models.EmailField(max_length=120)
     username = models.CharField(max_length=120)
     password = models.CharField(max_length=120)
+    access_token = models.CharField(max_length=300, default=None, blank=True, null=True)
+    refresh_token = models.CharField(max_length=300, default=None, blank=True, null=True)
